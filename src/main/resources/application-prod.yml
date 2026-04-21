@@ -1,0 +1,29 @@
+server:
+  port: 8082
+
+spring:
+  application:
+    name: api-gateway
+
+  cloud:
+    gateway:
+      server:
+        webflux:
+          routes:
+            - id: cart-service
+              uri: lb://cart-service
+              predicates:
+                - Path=/carts/**,/s2s/carts/**
+            - id: product-service
+              uri: lb://product-service
+              predicates:
+                - Path=/products/**,/s2s/products/**
+            - id: order-service
+              uri: lb://order-service
+              predicates:
+                - Path=/orders/**
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://34.10.42.179:8761/eureka
